@@ -1,8 +1,3 @@
-<?php
-	if(empty($_SERVER['QUERY_STRING'])){
-		header('Location: error.html');	
-	}
-?>
 <?php require_once 'request.php';?>
 <!DOCTYPE html>
 <html>
