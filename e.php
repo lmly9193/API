@@ -1,6 +1,6 @@
 <?php
 	if(empty($_SERVER['QUERY_STRING'])){
-		header('Location: index.html');	
+		header('Location: error.html');	
 	}
 ?>
 <?php require_once 'request.php';?>

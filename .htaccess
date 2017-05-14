@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteRule ^(.*)$ e.php?$1
+RewriteRule ^(.*)/$ e.php?$1
