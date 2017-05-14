@@ -1,32 +1,30 @@
 <?php
 	require_once 'class.JavaScriptPacker.php';
 	
+	function d($url){
+		$url = strrev($url);
+		for($c=1;$c<=6;$c++){
+			$url = base64_decode(strrev($url));
+		}
+		$id = strrev($url);
+		JsPacker($id);
+	}
+	
 	function JsPacker($id){
-		// open in newtab
-		$open_new_tab = "playerInstance.addButton('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhAhwOMiXdKXT8AAAAoUlEQVQoz4WRvRGCUBAGF4fhVWAVJIaWYTlWQTHKTwsSGZnSgKGZyRqA+MDn+GV3u3M3c4cHB6OA+7jOqdjSE+dBDwR2AKgXvmKwmyamBIOt2nlNChNuDV4SgsFmxJAQLKzVxgBg6X4hTLge8bs5Cxae1dpiZvEKC0/q+YPXwlE9xXgU8rmqgCp7ft8secnPhA1/kjmw5faDltxZv3uRwcMLdtjIVcxHYWwAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTctMDItMjhUMTQ6NTA6MzcrMDE6MDATThFcAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE3LTAyLTI4VDE0OjUwOjM3KzAxOjAwYhOp4AAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAAASUVORK5CYII=','在新視窗中開啟',function(){window.open('https://drive.google.com/file/d/'+playerInstance.getPlaylistItem()['mediaid']+'/preview','_blank');},'preview');";
-		// downlaod buttom
-		$downlaod_buttom = "playerInstance.addButton('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhAhwOKDF33lpaAAAAbElEQVQoz72PoQ2AMBQFrwSBbMIAKCZgGRJGQTMKO7AECZ5hHoa2If0Fx8l3Zx5EdChwpLXigx+CGtQzAODj6jUCsLsTUKNNFpuacNBKkjaTp86SXD8SW8ekrO/kTVs40MJUsKuba6ClKwQtXHK6ch70HrrzAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE3LTAyLTI4VDE0OjQwOjQ5KzAxOjAwiDq82AAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxNy0wMi0yOFQxNDo0MDo0OSswMTowMPlnBGQAAAAZdEVYdFNvZnR3YXJlAHd3dy5pbmtzY2FwZS5vcmeb7jwaAAAAAElFTkSuQmCC','下載',function(){window.open('https://docs.google.com/uc?id='+playerInstance.getPlaylistItem()['mediaid']+'&export=download','_blank');},'download');";
-		// memory usage
-		$memory_usage = "console.log('記憶體用量: ".memory_get_usage()." (byte)');";
 		// warning
-		$warning = "console.warn('%cMAMA LET ME TOLD YOU!!','font-size:40px;color:red');console.warn('%cDON\'T BE EVIL!!','font-size:60px;color:red');";
+		$dev = "console.log('%c[警告] 你正在使用開發人員專用介面，操作不當可能會令你暴露在危險之中！\\n記憶體用量: ".memory_get_usage()." (byte)','color:red');";
 		// main
-		$videoContainer = "var playerInstance=jwplayer('videoContainer');playerInstance.setup(".setup($id).");".$open_new_tab.$downlaod_buttom.$memory_usage.$warning;
+		$videoContainer = "var playerInstance=jwplayer('videoContainer');playerInstance.setup(".setup($id).");".$dev;
 		$JSpacker = new JavaScriptPacker($videoContainer,62,true,false);
 		$JSpacked = $JSpacker->pack();
 		echo $JSpacked;
 	}
 	
-	
 	function setup($id){
 		$result = request($id);
 		$setup = array(
-			//'playlist'=>array(
-				'mediaid'=>$id,
-				'title'=>$result['title'],
-				'image'=>'https://drive.google.com/thumbnail?authuser=0&sz=w720&id='.$id,
-				'sources'=>$result['sources'],
-			//),
+			'image'=>'https://drive.google.com/thumbnail?authuser=0&sz=w720&id='.$id,
+			'sources'=>$result,
 			'height'=>'100%',
 			'width'=>'100%',
 			'skin'=>array(
@@ -40,7 +38,7 @@
 	}
 	
 	function request($id){
-		$url = 'https://videoapi.io/api/getlink?key=06a622ce5607438ee71cac55045c490a&link=https://drive.google.com/file/d/'.$id.'/view&return=data';
+		$url = 'https://videoapi.io/api/getlink?key=06a622ce5607438ee71cac55045c490a&link=https://drive.google.com/file/d/'.$id.'/view';
 		$head = array('Connection: keep-alive','Keep-Alive: 300','Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7','Accept-Language: en-us,en;q=0.5');
 		$ch = @curl_init();
 		curl_setopt($ch,CURLOPT_URL,$url);
@@ -61,8 +59,8 @@
 			return $result_arr;	//return
 		}else{
 			$result_arr = json_decode($result,true);	//decode json
-			//$result_arr['sources'] = array_reverse($result_arr['sources']);	//reverse
-			foreach($result_arr['sources'] as &$value){
+			//$result_arr = array_reverse($result_arr);	//reverse
+			foreach($result_arr as &$value){
 				//delete api//
 				$parse_query = parse_url($value['file'],PHP_URL_QUERY);
 				parse_str($parse_query,$value['file']);
