@@ -31,7 +31,9 @@
 				'name'=>'tube',
 				'active'=>'red',
 				'inactive'=>'white'
-			)
+			),
+			'abouttext'=>'© 2017 Ethan',
+			'aboutlink'=>'https://infree.cc/'
 		);
 		$setup = json_encode($setup,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
 		return $setup;	//return
