@@ -6,5 +6,5 @@
 			$url = strrev(base64_encode($url));
 		}
 		$url = strrev($url);
-		header('Location: ?'.$url);
+		header('Location: index.php?'.$url);
 	}
