@@ -1,7 +1,7 @@
 # Do not remove this line or mod_rewrite rules and search engine friendly URLs will stop working
 RewriteEngine On
 RewriteBase /
-RewriteRule ^hash/([^/]*)$ /index.php?lmly9193=$1 [L]
+RewriteRule ^hash/([^/]*)$ /embed.php?lmly9193=$1 [L]
 RewriteRule ^id/([^/]*)$ /get.php?id=$1 [L]
 
 
