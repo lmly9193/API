@@ -63,12 +63,15 @@
 			$result_arr = json_decode($result,true);	//decode json
 			//$result_arr = array_reverse($result_arr);	//reverse
 			foreach($result_arr as &$value){
-				//delete api//
+				//delete api
 				$parse_query = parse_url($value['file'],PHP_URL_QUERY);
 				parse_str($parse_query,$value['file']);
 				unset($value['file']['api']);
 				$query = http_build_query($value['file']);
 				$value['file'] = urldecode('https://redirector.googlevideo.com/videoplayback?'.$query);
+				
+				//delete src
+				unset($value['src']);
 				
 				// default 720p
 				if($value['label'] == 720){
