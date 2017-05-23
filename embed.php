@@ -12,7 +12,7 @@
 	</head>
 	<body>
 		<div id='videoContainer'>Loading Error...</div>
-		<script><?php d($_GET['lmly9193'])?></script>
+		<script><?php getdefine($_GET['lmly9193'])?></script>
 		<noscript>您的瀏覽器不被網站支援</noscript>
 	</body>
 </html>

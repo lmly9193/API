@@ -1,13 +1,18 @@
 <?php
 	require_once 'class.JavaScriptPacker.php';
 	
-	function d($url){
-		$url = strrev($url);
-		for($c=1;$c<=6;$c++){
-			$url = base64_decode(strrev($url));
+	function getdefine($hash){
+		$result = file_get_contents('https://spreadsheets.google.com/feeds/list/1_T6eyHxElEXTwgHKsky0b-WKzIxjYNSxostldDt1qYM/3/public/values?alt=json');
+		$result = json_decode($result);
+		foreach($result->feed->entry as &$value){
+			$k[] = $value->{'gsx$id'}->{'$t'};
+			$j[] = $value->{'gsx$hash'}->{'$t'};
 		}
-		$id = strrev($url);
-		JsPacker($id);
+		$l = array_combine($j,$k);
+		
+		if(isset($l[$hash])){
+			JsPacker($l[$hash]);
+		}
 	}
 	
 	function JsPacker($id){
